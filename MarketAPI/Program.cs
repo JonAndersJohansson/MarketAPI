@@ -1,6 +1,7 @@
 
 using DataAccessLayer.Data;
 using Microsoft.EntityFrameworkCore;
+using Services;
 
 namespace MarketAPI
 {
@@ -22,6 +23,9 @@ namespace MarketAPI
 
             // DataInitializer, Dependency Injection
             builder.Services.AddTransient<DataInitializer>();
+
+            // Services
+            builder.Services.AddScoped<IAdService, AdService>();
 
             var app = builder.Build();
 
