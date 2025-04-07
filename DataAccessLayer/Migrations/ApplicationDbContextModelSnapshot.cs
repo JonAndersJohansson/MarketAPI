@@ -123,13 +123,13 @@ namespace DataAccessLayer.Migrations
                     b.HasOne("DataAccessLayer.Models.Ad", "Ad")
                         .WithMany("Bids")
                         .HasForeignKey("AdId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("DataAccessLayer.Models.User", "User")
-                        .WithMany()
+                        .WithMany("Bids")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Ad");
@@ -145,6 +145,8 @@ namespace DataAccessLayer.Migrations
             modelBuilder.Entity("DataAccessLayer.Models.User", b =>
                 {
                     b.Navigation("Ads");
+
+                    b.Navigation("Bids");
                 });
 #pragma warning restore 612, 618
         }
