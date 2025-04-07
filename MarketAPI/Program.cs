@@ -1,5 +1,7 @@
 
 using DataAccessLayer.Data;
+using DataAccessLayer.Repositories;
+using MarketAPI.Profiles;
 using Microsoft.EntityFrameworkCore;
 using Services;
 
@@ -27,6 +29,12 @@ namespace MarketAPI
             // Services
             builder.Services.AddScoped<IAdService, AdService>();
 
+            // Repositories
+            builder.Services.AddScoped<IAdRepository, AdRepository>();
+
+            // AutoMapper
+            builder.Services.AddAutoMapper(typeof(AdProfile));
+
             var app = builder.Build();
 
 
@@ -47,7 +55,6 @@ namespace MarketAPI
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 

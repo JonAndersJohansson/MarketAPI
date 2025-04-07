@@ -20,33 +20,42 @@ namespace MarketAPI.Controllers
         [HttpGet] //GetAll
         public async Task<ActionResult<List<AdDto>>> GetAllAsync()
         {
-            return Ok(await _adService.GetAllAsync());
+            try
+            {
+                var adsDto = await _adService.GetAllAsync();
+                return Ok(adsDto);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Ett internt fel uppstod: {ex.Message}");
+            }
         }
 
         //[HttpGet("{id}")] //GetById
         //public async Task<ActionResult<AdDto>> GetOneAsync(int id)
         //{
 
-        //    var ad = await _adService.GetByIdAsync(id);
+        //    var adDto = await _adService.GetByIdAsync(id);
 
         //    //var hero = _dbContext.SuperHeroes.Find(id);
 
-        //    if (ad == null)
+        //    if (adDto == null)
         //    {
         //        return BadRequest("Ad not found");
         //    }
-        //    return Ok(ad);
+        //    return Ok(adDto);
         //}
+
         //[HttpPost] //Create
-        //public async Task<ActionResult<AdCreateDto>> PostAsync(AdCreateDto ad)
+        //public async Task<ActionResult<AdCreateDto>> PostAsync(AdCreateDto adDto)
         //{
 
-        //    _adService.CreateAsync(ad);
+        //    _adService.CreateAsync(adDto);
         //    //await _dbContext.SaveChangesAsync();
         //    return Ok(await _dbContext.SuperHeroes.ToListAsync());
         //}
         //[HttpPut("{id}")] //Update
-        //public async Task<ActionResult<AdUpdateDto>> UpdateAsync(AdUpdateDto ad)
+        //public async Task<ActionResult<AdUpdateDto>> UpdateAsync(AdUpdateDto adDto)
         //{
         //    // OBS: PUT Uppdaterar HELA SuperHero (ALLA properties)
         //    var adToUpdate = await _dbContext.SuperHeroes.FindAsync(hero.Id);
