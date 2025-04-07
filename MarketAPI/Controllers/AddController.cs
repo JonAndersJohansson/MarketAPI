@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DataAccessLayer.DTO;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace MarketAPI.Controllers
 {
@@ -6,10 +8,18 @@ namespace MarketAPI.Controllers
     [Route("[controller]")]
     public class AddController : Controller
     {
+        private readonly AdService _adService;
 
-        public IActionResult Index()
+        public AddController(AdService adService)
         {
-            return View();
+            _adService = adService;
+        }
+
+
+        [HttpGet] //GetAll
+        public async Task<ActionResult<List<AdDto>>> GetAll()
+        {
+            return Ok(await _dbContext.SuperHeroes.ToListAsync());
         }
     }
 }
