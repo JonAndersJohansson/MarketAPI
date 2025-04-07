@@ -6,12 +6,12 @@ using Services;
 namespace MarketAPI.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
-    public class AddController : Controller
+    [Route("api/[controller]")]
+    public class AdController : Controller
     {
-        private readonly AdService _adService;
+        private readonly IAdService _adService;
 
-        public AddController(AdService adService)
+        public AdController(IAdService adService)
         {
             _adService = adService;
         }
