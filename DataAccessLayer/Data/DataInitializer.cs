@@ -1,10 +1,5 @@
 ﻿using DataAccessLayer.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataAccessLayer.Data
 {
@@ -26,7 +21,7 @@ namespace DataAccessLayer.Data
 
         private void SeedData()
         {
-            // === Users ===
+            // Users
             if (!_dbContext.Users.Any(u => u.Name == "Pelle Jönsson"))
             {
                 _dbContext.Users.Add(new User
@@ -50,7 +45,7 @@ namespace DataAccessLayer.Data
             var pelle = _dbContext.Users.First(u => u.Name == "Pelle Jönsson");
             var karin = _dbContext.Users.First(u => u.Name == "Karin Andersson");
 
-            // === Ads ===
+            // Ads
             if (!_dbContext.Ads.Any(a => a.Title == "Volvo 240"))
             {
                 var ad = new Ad
