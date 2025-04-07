@@ -1,4 +1,7 @@
 
+using DataAccessLayer.Data;
+using Microsoft.EntityFrameworkCore;
+
 namespace MarketAPI
 {
     public class Program
@@ -13,7 +16,21 @@ namespace MarketAPI
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
 
+            // DbContext
+            builder.Services.AddDbContext<ApplicationDbContext>(options =>
+            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+            // DataInitializer, Dependency Injection
+            builder.Services.AddTransient<DataInitializer>();
+
             var app = builder.Build();
+
+
+            // MigrateData()
+            using (var scope = app.Services.CreateScope())
+            {
+                scope.ServiceProvider.GetService<DataInitializer>().MigrateData();
+            }
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

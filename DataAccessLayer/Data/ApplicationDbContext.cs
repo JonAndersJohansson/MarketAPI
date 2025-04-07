@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using DataAccessLayer.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,8 @@ namespace DataAccessLayer.Data
         {
         }
 
-        //public DbSet<SuperHero> SuperHeroes { get; set; }
+        public DbSet<Ad> Ads { get; set; }
+        public DbSet<Bid> Bids { get; set; }
+        public DbSet<User> Users { get; set; }
     }
 }
