@@ -25,6 +25,12 @@ namespace DataAccessLayer.Repositories
                 .Where(a => a.IsActive)
                 .ToListAsync();
         }
+        public async Task<Ad?> GetByIdAsync(int id)
+        {
+            return await _dbContext.Ads
+                .Include(a => a.Creator)
+                .FirstOrDefaultAsync(a => a.Id == id && a.IsActive);
+        }
     }
 
 }

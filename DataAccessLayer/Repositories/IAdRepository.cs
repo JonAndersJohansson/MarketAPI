@@ -10,7 +10,7 @@ namespace DataAccessLayer.Repositories
     public interface IAdRepository
     {
         Task<List<Ad>> GetAllAsync();
-        //Task GetByIdAsync(int id);
+        Task<Ad> GetByIdAsync(int id);
     }
 
 }

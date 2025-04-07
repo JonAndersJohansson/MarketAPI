@@ -26,11 +26,11 @@ namespace Services
             return _mapper.Map<List<AdDto>>(ads);
         }
 
-        //public async Task<AdDto?> GetByIdAsync(int id)
-        //{
-        //    var ad = await _repo.GetByIdAsync(id);
-        //    return _mapper.Map<AdDto>(ad);
-        //}
+        public async Task<AdDto?> GetByIdAsync(int id)
+        {
+            var ad = await _repo.GetByIdAsync(id);
+            return _mapper.Map<AdDto>(ad);
+        }
     }
 
 }

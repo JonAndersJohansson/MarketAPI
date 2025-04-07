@@ -10,7 +10,7 @@ namespace Services
     public interface IAdService
     {
         Task<List<AdDto>> GetAllAsync();
-        //Task<AdDto?> GetByIdAsync(int id);
+        Task<AdDto?> GetByIdAsync(int id);
         //Task<AdDto> CreateAsync(AdCreateDto dto);
         //Task<bool> UpdateAsync(AdUpdateDto dto);
         //Task<bool> DeleteAsync(int id);

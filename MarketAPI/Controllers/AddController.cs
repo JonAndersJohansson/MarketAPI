@@ -27,24 +27,29 @@ namespace MarketAPI.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Ett internt fel uppstod: {ex.Message}");
+                return StatusCode(500, $"Error in loading: {ex.Message}");
             }
         }
 
-        //[HttpGet("{id}")] //GetById
-        //public async Task<ActionResult<AdDto>> GetOneAsync(int id)
-        //{
+        [HttpGet("{id}")]
+        public async Task<ActionResult<AdDto>> GetOneAsync(int id)
+        {
+            try
+            {
+                var adDto = await _adService.GetByIdAsync(id);
 
-        //    var adDto = await _adService.GetByIdAsync(id);
+                if (adDto == null)
+                {
+                    return NotFound("Ad not found.");
+                }
 
-        //    //var hero = _dbContext.SuperHeroes.Find(id);
-
-        //    if (adDto == null)
-        //    {
-        //        return BadRequest("Ad not found");
-        //    }
-        //    return Ok(adDto);
-        //}
+                return Ok(adDto);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error in loading: {ex.Message}");
+            }
+        }
 
         //[HttpPost] //Create
         //public async Task<ActionResult<AdCreateDto>> PostAsync(AdCreateDto adDto)
