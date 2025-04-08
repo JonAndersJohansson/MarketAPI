@@ -42,5 +42,28 @@ namespace Services
             var createdUser = await _repo.CreateAsync(user);
             return _mapper.Map<UserDto>(createdUser);
         }
+
+        public async Task<UserDto> UpdateAsync(UserUpdateDto updatedUserDto)
+        {
+            var existingUser = await _repo.GetByIdAsync(updatedUserDto.Id);
+            if (existingUser == null)
+            {
+                return null;
+            }
+            _mapper.Map(updatedUserDto, existingUser);
+            await _repo.UpdateAsync(existingUser);
+            return _mapper.Map<UserDto>(existingUser);
+        }
+        public async Task<bool> DeleteAsync(int id)
+        {
+            var user = await _repo.GetByIdAsync(id);
+            if (user == null)
+            {
+                return false;
+            }
+            user.IsActive = false;
+            await _repo.UpdateAsync(user);
+            return true;
+        }
     }
 }

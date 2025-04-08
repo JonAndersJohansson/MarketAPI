@@ -49,7 +49,10 @@ namespace DataAccessLayer.Repositories
 
             return createdUser;
         }
-
+        public async Task UpdateAsync(User existingUser)
+        {
+            await _dbContext.SaveChangesAsync();
+        }
 
     }
 }

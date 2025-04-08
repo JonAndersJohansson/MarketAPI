@@ -29,7 +29,7 @@ namespace MarketAPI.Controllers
             return Ok(usersDto);
         }
 
-        [HttpGet("{id}", Name = "GetAdById")] //GetOne
+        [HttpGet("{id}", Name = "GetUserById")] //GetOne
         public async Task<ActionResult<UserDto>> GetOneAsync(int id)
         {
             var userDto = await _userService.GetByIdAsync(id);
@@ -57,37 +57,37 @@ namespace MarketAPI.Controllers
                 return BadRequest("Could not create user.");
             }
 
-            return CreatedAtRoute("GetAdById", new { id = createdUser.Id }, createdUser);
+            return CreatedAtRoute("GetUserById", new { id = createdUser.Id }, createdUser);
         }
 
-        //[HttpPut("{id}")] //Put
-        //public async Task<ActionResult<AdUpdateDto>> PutAsync(int id, AdUpdateDto updatedAdDto)
-        //{
-        //    if (id != updatedAdDto.Id)
-        //        return BadRequest("Id mismatch.");
+        [HttpPut("{id}")] //Put
+        public async Task<ActionResult<UserUpdateDto>> PutAsync(int id, UserUpdateDto updatedUserDto)
+        {
+            if (id != updatedUserDto.Id)
+                return BadRequest("Id mismatch.");
 
-        //    if (!ModelState.IsValid)
-        //        return BadRequest(ModelState);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-        //    var adDto = await _userService.UpdateAsync(updatedAdDto);
+            var userDto = await _userService.UpdateAsync(updatedUserDto);
 
-        //    if (adDto == null)
-        //        return NotFound("Ad not found.");
+            if (userDto == null)
+                return NotFound("User not found.");
 
-        //    return Ok(adDto);
-        //}
+            return Ok(userDto);
+        }
 
-        //[HttpDelete]
-        //[Route("{id}")]
-        //public async Task<ActionResult<AdDto>> Delete(int id)
-        //{
-        //    var success = await _userService.DeleteAsync(id);
-        //    if (!success)
-        //    {
-        //        return NotFound("Ad not found.");
-        //    }
+        [HttpDelete]
+        [Route("{id}")]
+        public async Task<ActionResult<UserDto>> Delete(int id)
+        {
+            var success = await _userService.DeleteAsync(id);
+            if (!success)
+            {
+                return NotFound("User not found.");
+            }
 
-        //    return Ok("Ad deleted successfully.");
-        //}
+            return Ok("User deleted successfully.");
+        }
     }
 }
