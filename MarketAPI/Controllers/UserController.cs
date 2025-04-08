@@ -78,7 +78,7 @@ namespace MarketAPI.Controllers
         }
 
         [HttpDelete]
-        [Route("{id}")]
+        [Route("{id}")] //Delete
         public async Task<ActionResult<UserDto>> Delete(int id)
         {
             var success = await _userService.DeleteAsync(id);

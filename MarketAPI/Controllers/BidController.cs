@@ -79,7 +79,7 @@ namespace MarketAPI.Controllers
         }
 
         [HttpDelete]
-        [Route("{id}")]
+        [Route("{id}")] //Delete
         public async Task<ActionResult<BidDto>> Delete(int id)
         {
             var success = await _bidService.DeleteAsync(id);
