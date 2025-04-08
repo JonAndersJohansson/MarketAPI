@@ -27,12 +27,16 @@ namespace MarketAPI
 
             // Services
             builder.Services.AddScoped<IAdService, AdService>();
+            builder.Services.AddScoped<IUserService, UserService>();
+            //builder.Services.AddScoped<IBidService, BidService>();
 
             // Repositories
             builder.Services.AddScoped<IAdRepository, AdRepository>();
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
+            //builder.Services.AddScoped<IBidRepository, BidRepository>();
 
             // AutoMapper
-            builder.Services.AddAutoMapper(typeof(AdProfile));
+            builder.Services.AddAutoMapper(typeof(AdProfile), typeof(UserProfile), typeof(BidProfile));
 
             var app = builder.Build();
 

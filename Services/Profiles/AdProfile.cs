@@ -12,7 +12,7 @@ namespace Services.Profiles
                 .ForMember(dest => dest.CreatorName, opt => opt.MapFrom(src => src.Creator.Name));
 
             CreateMap<AdCreateDto, Ad>()
-            .ReverseMap();
+                .ReverseMap();
 
             CreateMap<AdUpdateDto, Ad>()
                 .ReverseMap();
