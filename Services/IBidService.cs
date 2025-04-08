@@ -9,6 +9,7 @@ namespace Services
 {
     public interface IBidService
     {
+        Task<BidDto> CreateAsync(BidCreateDto newBidDto);
         Task<List<BidDto>> GetAllAsync();
         Task<BidDto?> GetByIdAsync(int id);
     }

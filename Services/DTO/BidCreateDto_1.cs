@@ -2,7 +2,7 @@
 
 namespace Services.DTO
 {
-    public class UserCreateDto
+    public class BidCreateDto
     {
         [Required(ErrorMessage = "Name is required.")]
         [StringLength(100, MinimumLength = 2, ErrorMessage = "Name must be between 2 - 100 letters.")]

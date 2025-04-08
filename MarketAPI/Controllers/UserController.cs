@@ -43,7 +43,7 @@ namespace MarketAPI.Controllers
         }
 
         [HttpPost] //Create
-        public async Task<ActionResult<UserDto>> PostAsync(UserCreateDto newUserDto)
+        public async Task<ActionResult<UserDto>> PostAsync(BidCreateDto newUserDto)
         {
             if (!ModelState.IsValid)
             {

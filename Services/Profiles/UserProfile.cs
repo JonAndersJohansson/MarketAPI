@@ -10,7 +10,7 @@ namespace Services.Profiles
             CreateMap<User, UserDto>()
                 .ReverseMap();
 
-            CreateMap<UserCreateDto, User>()
+            CreateMap<BidCreateDto, User>()
                 .ReverseMap();
 
             CreateMap<UserUpdateDto, User>()

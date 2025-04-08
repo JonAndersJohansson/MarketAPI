@@ -43,23 +43,23 @@ namespace MarketAPI.Controllers
             return Ok(bidDto);
         }
 
-        //[HttpPost] //Create
-        //public async Task<ActionResult<UserDto>> PostAsync(UserCreateDto newUserDto)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
+        [HttpPost] //Create
+        public async Task<ActionResult<BidDto>> PostAsync(BidCreateDto newBidDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
-        //    var createdUser = await _userService.CreateAsync(newUserDto);
+            var createdBid = await _bidService.CreateAsync(newBidDto);
 
-        //    if (createdUser == null)
-        //    {
-        //        return BadRequest("Could not create user.");
-        //    }
+            if (createdBid == null)
+            {
+                return BadRequest("Could not create bid.");
+            }
 
-        //    return CreatedAtRoute("GetUserById", new { id = createdUser.Id }, createdUser);
-        //}
+            return CreatedAtRoute("GetBidById", new { id = createdBid.Id }, createdBid);
+        }
 
         //[HttpPut("{id}")] //Put
         //public async Task<ActionResult<UserUpdateDto>> PutAsync(int id, UserUpdateDto updatedUserDto)

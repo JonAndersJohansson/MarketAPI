@@ -34,5 +34,22 @@ namespace DataAccessLayer.Repositories
                 .Include(b => b.User)
                 .FirstOrDefaultAsync(b => b.Id == id && b.IsActive);
         }
+
+        public async Task<Bid> CreateAsync(Bid bid)
+        {
+            bid.IsActive = true;
+            await _dbContext.Bids.AddAsync(bid);
+            await _dbContext.SaveChangesAsync();
+
+            var createdBid = await _dbContext.Bids
+                .Include(b => b.Ad)
+                .Include(b => b.User)
+                .FirstOrDefaultAsync(b => b.Id == bid.Id);
+
+            if (createdBid == null)
+                throw new Exception("Failed to reload Bid after saving.");
+
+            return createdBid;
+        }
     }
 }

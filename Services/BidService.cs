@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using DataAccessLayer.Models;
 using DataAccessLayer.Repositories;
 using Services.DTO;
 using System;
@@ -29,6 +30,13 @@ namespace Services
         {
             var bid = await _repo.GetByIdAsync(id);
             return _mapper.Map<BidDto>(bid);
+        }
+
+        public async Task<BidDto> CreateAsync(BidCreateDto newBidDto)
+        {
+            var bid = _mapper.Map<Bid>(newBidDto);
+            var createdBid = await _repo.CreateAsync(bid);
+            return _mapper.Map<BidDto>(createdBid);
         }
     }
 }

@@ -36,7 +36,7 @@ namespace Services
             }
             return _mapper.Map<UserDto>(user);
         }
-        public async Task<UserDto> CreateAsync(UserCreateDto userCreateDto)
+        public async Task<UserDto> CreateAsync(BidCreateDto userCreateDto)
         {
             var user = _mapper.Map<User>(userCreateDto);
             var createdUser = await _repo.CreateAsync(user);
