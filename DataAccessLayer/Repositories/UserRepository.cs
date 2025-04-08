@@ -22,7 +22,15 @@ namespace DataAccessLayer.Repositories
             return await _dbContext.Users
                 .Include(u => u.Bids)
                 .Include(u => u.Ads)
+                .Where(u => u.IsActive)
                 .ToListAsync();
+        }
+        public async Task<User?> GetByIdAsync(int id)
+        {
+            return await _dbContext.Users
+                .Include(u => u.Bids)
+                .Include(u => u.Ads)
+                .FirstOrDefaultAsync(u => u.Id == id && u.IsActive);
         }
 
     }

@@ -24,5 +24,16 @@ namespace Services
             var users = await _repo.GetAllAsync();
             return _mapper.Map<List<UserDto>>(users);
         }
+
+        public async Task<UserDto> GetByIdAsync(int id)
+        {
+
+            var user = await _repo.GetByIdAsync(id);
+            if (user == null)
+            {
+                return null;
+            }
+            return _mapper.Map<UserDto>(user);
+        }
     }
 }

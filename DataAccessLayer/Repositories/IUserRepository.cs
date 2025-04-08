@@ -9,9 +9,9 @@ namespace DataAccessLayer.Repositories
 {
     public interface IUserRepository
     {
-        //Task<User> CreateAsync(User user);
         Task<List<User>> GetAllAsync();
-        //Task<User> GetByIdAsync(int id);
+        Task<User> GetByIdAsync(int id);
+        //Task<User> CreateAsync(User user);
         //Task UpdateAsync(User user);
     }
 }
