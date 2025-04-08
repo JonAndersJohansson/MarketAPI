@@ -17,6 +17,14 @@ namespace DataAccessLayer.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<Ad>()
+                .Property(a => a.Price)
+                .HasPrecision(18, 2);
+
+            modelBuilder.Entity<Bid>()
+                .Property(b => b.Amount)
+                .HasPrecision(18, 2);
+
             modelBuilder.Entity<Bid>()
                 .HasOne(b => b.Ad)
                 .WithMany(a => a.Bids)
