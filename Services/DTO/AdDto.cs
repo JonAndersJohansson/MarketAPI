@@ -9,5 +9,4 @@
         public DateTime CreatedAt { get; set; }
         public string CreatorName { get; set; } = null!;
     }
-
 }

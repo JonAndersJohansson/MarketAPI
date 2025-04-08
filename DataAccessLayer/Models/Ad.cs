@@ -12,7 +12,6 @@
         // Navigation properties
         public int CreatorId { get; set; }
         public User Creator { get; set; } = null!;
-
         public ICollection<Bid> Bids { get; set; } = new List<Bid>();
     }
 }

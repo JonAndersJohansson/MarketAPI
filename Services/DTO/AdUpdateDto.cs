@@ -18,6 +18,5 @@ namespace Services.DTO
         [Required(ErrorMessage = "Price is required.")]
         [Range(0, 1_000_000, ErrorMessage = "Price must be between 0 and 1000000.")]
         public decimal Price { get; set; }
-
     }
 }

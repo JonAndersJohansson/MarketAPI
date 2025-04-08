@@ -38,7 +38,7 @@ namespace Services
         {
             var existingAd = await _repo.GetByIdAsync(updatedAdDto.Id);
 
-            if (existingAd == null)
+            if (existingAd == null || !existingAd.IsActive)
                 return null;
 
             _mapper.Map(updatedAdDto, existingAd);
@@ -48,6 +48,14 @@ namespace Services
             return _mapper.Map<AdDto>(existingAd);
         }
 
+        public async Task<bool> DeleteAsync(int id)
+        {
+            var ad = await _repo.GetByIdAsync(id);
+            if (ad == null)
+                return false;
+            ad.IsActive = false;
+            await _repo.UpdateAsync(ad);
+            return true;
+        }
     }
-
 }

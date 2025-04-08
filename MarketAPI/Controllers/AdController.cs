@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Services;
 using Services.DTO;
 
@@ -78,5 +77,17 @@ namespace MarketAPI.Controllers
             return Ok(adDto);
         }
 
+        [HttpDelete]
+        [Route("{id}")]
+        public async Task<ActionResult<AdDto>> Delete(int id)
+        {
+            var success = await _adService.DeleteAsync(id);
+            if (!success)
+            {
+                return NotFound("Ad not found.");
+            }
+
+            return Ok("Ad deleted successfully.");
+        }
     }
 }

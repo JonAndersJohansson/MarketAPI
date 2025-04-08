@@ -8,8 +8,6 @@ namespace Services
         Task<AdDto?> GetByIdAsync(int id);
         Task<AdDto> CreateAsync(AdCreateDto dto);
         Task<AdDto> UpdateAsync(AdUpdateDto updatedAdDto);
-        //Task<bool> UpdateAsync(AdUpdateDto dto);
-        //Task<bool> DeleteAsync(int id);
-        //Task<bool> PatchTitleAsync(int id, string newTitle);
+        Task<bool> DeleteAsync(int id);
     }
 }

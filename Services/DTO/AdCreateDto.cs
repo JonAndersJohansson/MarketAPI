@@ -19,5 +19,4 @@ namespace Services.DTO
         [Required(ErrorMessage = "CreatorId is required")]
         public int CreatorId { get; set; }
     }
-
 }
