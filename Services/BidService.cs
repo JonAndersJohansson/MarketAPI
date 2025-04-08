@@ -24,5 +24,11 @@ namespace Services
             var bids = await _repo.GetAllAsync();
             return _mapper.Map<List<BidDto>>(bids);
         }
+
+        public async Task<BidDto?> GetByIdAsync(int id)
+        {
+            var bid = await _repo.GetByIdAsync(id);
+            return _mapper.Map<BidDto>(bid);
+        }
     }
 }

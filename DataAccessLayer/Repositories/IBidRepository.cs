@@ -10,5 +10,6 @@ namespace DataAccessLayer.Repositories
     public interface IBidRepository
     {
         Task<List<Bid>> GetAllAsync();
+        Task<Bid> GetByIdAsync(int id);
     }
 }

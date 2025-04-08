@@ -30,18 +30,18 @@ namespace MarketAPI.Controllers
             return Ok(bidsDto);
         }
 
-        //[HttpGet("{id}", Name = "GetUserById")] //GetOne
-        //public async Task<ActionResult<UserDto>> GetOneAsync(int id)
-        //{
-        //    var userDto = await _userService.GetByIdAsync(id);
+        [HttpGet("{id}", Name = "GetBidById")] //GetOne
+        public async Task<ActionResult<BidDto>> GetOneAsync(int id)
+        {
+            var bidDto = await _bidService.GetByIdAsync(id);
 
-        //    if (userDto == null)
-        //    {
-        //        return NotFound("User not found.");
-        //    }
+            if (bidDto == null)
+            {
+                return NotFound("Bid not found.");
+            }
 
-        //    return Ok(userDto);
-        //}
+            return Ok(bidDto);
+        }
 
         //[HttpPost] //Create
         //public async Task<ActionResult<UserDto>> PostAsync(UserCreateDto newUserDto)
