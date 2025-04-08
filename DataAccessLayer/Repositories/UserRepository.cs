@@ -33,5 +33,23 @@ namespace DataAccessLayer.Repositories
                 .FirstOrDefaultAsync(u => u.Id == id && u.IsActive);
         }
 
+        public async Task<User> CreateAsync(User user)
+        {
+            user.IsActive = true;
+            await _dbContext.Users.AddAsync(user);
+            await _dbContext.SaveChangesAsync();
+
+            var createdUser = await _dbContext.Users
+                .Include(u => u.Bids)
+                .Include(u => u.Ads)
+                .FirstOrDefaultAsync(u => u.Id == user.Id);
+
+            if (createdUser == null)
+                throw new Exception("Failed to reload User after saving.");
+
+            return createdUser;
+        }
+
+
     }
 }

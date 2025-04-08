@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using DataAccessLayer.Models;
 using DataAccessLayer.Repositories;
 using Services.DTO;
 using System;
@@ -34,6 +35,12 @@ namespace Services
                 return null;
             }
             return _mapper.Map<UserDto>(user);
+        }
+        public async Task<UserDto> CreateAsync(UserCreateDto userCreateDto)
+        {
+            var user = _mapper.Map<User>(userCreateDto);
+            var createdUser = await _repo.CreateAsync(user);
+            return _mapper.Map<UserDto>(createdUser);
         }
     }
 }
