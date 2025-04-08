@@ -31,6 +31,21 @@ namespace DataAccessLayer.Repositories
                 .Include(a => a.Creator)
                 .FirstOrDefaultAsync(a => a.Id == id && a.IsActive);
         }
+        public async Task<Ad> CreateAsync(Ad ad)
+        {
+            ad.CreatedAt = DateTime.UtcNow;
+            ad.IsActive = true;
+            await _dbContext.Ads.AddAsync(ad);
+            await _dbContext.SaveChangesAsync();
+            var createdAd = await _dbContext.Ads
+                .Include(a => a.Creator)
+                .FirstOrDefaultAsync(a => a.Id == ad.Id);
+
+            if (createdAd == null)
+                throw new Exception("Failed to reload Ad after saving.");
+
+            return createdAd;
+        }
     }
 
 }

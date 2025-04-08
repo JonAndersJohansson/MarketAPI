@@ -1,11 +1,7 @@
 ﻿using AutoMapper;
-using DataAccessLayer.DTO;
+using DataAccessLayer.Models;
 using DataAccessLayer.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Services.DTO;
 
 namespace Services
 {
@@ -30,6 +26,12 @@ namespace Services
         {
             var ad = await _repo.GetByIdAsync(id);
             return _mapper.Map<AdDto>(ad);
+        }
+        public async Task<AdDto> CreateAsync(AdCreateDto createdDto)
+        {
+            var ad = _mapper.Map<Ad>(createdDto);
+            var createdAd = await _repo.CreateAsync(ad);
+            return _mapper.Map<AdDto>(createdAd);
         }
     }
 

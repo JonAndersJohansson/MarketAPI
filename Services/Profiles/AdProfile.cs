@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using DataAccessLayer.DTO;
 using DataAccessLayer.Models;
+using Services.DTO; 
 
-namespace MarketAPI.Profiles
+namespace Services.Profiles
 {
     public class AdProfile : Profile
     {
@@ -10,6 +10,9 @@ namespace MarketAPI.Profiles
         {
             CreateMap<Ad, AdDto>()
                 .ForMember(dest => dest.CreatorName, opt => opt.MapFrom(src => src.Creator.Name));
+
+            CreateMap<AdCreateDto, Ad>()
+            .ReverseMap();
         }
     }
 }

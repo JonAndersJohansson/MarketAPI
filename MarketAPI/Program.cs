@@ -1,7 +1,7 @@
 
 using DataAccessLayer.Data;
 using DataAccessLayer.Repositories;
-using MarketAPI.Profiles;
+using Services.Profiles;
 using Microsoft.EntityFrameworkCore;
 using Services;
 

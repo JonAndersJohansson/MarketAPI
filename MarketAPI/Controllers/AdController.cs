@@ -1,13 +1,12 @@
-﻿using DataAccessLayer.DTO;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
 using Services;
+using Services.DTO;
 
 namespace MarketAPI.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class AdController : Controller
+    public class AdController : ControllerBase
     {
         private readonly IAdService _adService;
 
@@ -20,47 +19,56 @@ namespace MarketAPI.Controllers
         [HttpGet] //GetAll
         public async Task<ActionResult<List<AdDto>>> GetAllAsync()
         {
-            try
+            var adsDto = await _adService.GetAllAsync();
+
+            if (adsDto == null || adsDto.Count == 0)
             {
-                var adsDto = await _adService.GetAllAsync();
-                return Ok(adsDto);
+                return NotFound("No ads found.");
             }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Error in loading: {ex.Message}");
-            }
+
+            return Ok(adsDto);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id}", Name = "GetAdById")] //GetOne
         public async Task<ActionResult<AdDto>> GetOneAsync(int id)
         {
-            try
-            {
-                var adDto = await _adService.GetByIdAsync(id);
+            var adDto = await _adService.GetByIdAsync(id);
 
-                if (adDto == null)
-                {
-                    return NotFound("Ad not found.");
-                }
-
-                return Ok(adDto);
-            }
-            catch (Exception ex)
+            if (adDto == null)
             {
-                return StatusCode(500, $"Error in loading: {ex.Message}");
+                return NotFound("Ad not found.");
             }
+
+            return Ok(adDto);
         }
 
-        //[HttpPost] //Create
-        //public async Task<ActionResult<AdCreateDto>> PostAsync(AdCreateDto adDto)
-        //{
+        [HttpPost] //Create
+        public async Task<ActionResult<AdDto>> PostAsync(AdCreateDto newAdDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
-        //    _adService.CreateAsync(adDto);
-        //    //await _dbContext.SaveChangesAsync();
-        //    return Ok(await _dbContext.SuperHeroes.ToListAsync());
-        //}
+            var createdAd = await _adService.CreateAsync(newAdDto);
+
+            if (createdAd == null)
+            {
+                return BadRequest("Could not create ad.");
+            }
+
+            return CreatedAtRoute("GetAdById", new { id = createdAd.Id }, createdAd);
+
+
+            //return Ok(createdAd); // bara för test
+
+            //Console.WriteLine($"CREATED ID: {createdAd.Id}");
+            //return CreatedAtAction(nameof(GetOneAsync), new { id = createdAd.Id }, createdAd);
+
+        }
+
         //[HttpPut("{id}")] //Update
-        //public async Task<ActionResult<AdUpdateDto>> UpdateAsync(AdUpdateDto adDto)
+        //public async Task<ActionResult<AdUpdateDto>> UpdateAsync(AdUpdateDto newAdDto)
         //{
         //    // OBS: PUT Uppdaterar HELA SuperHero (ALLA properties)
         //    var adToUpdate = await _dbContext.SuperHeroes.FindAsync(hero.Id);
