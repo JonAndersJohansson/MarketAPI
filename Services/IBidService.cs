@@ -12,5 +12,7 @@ namespace Services
         Task<BidDto> CreateAsync(BidCreateDto newBidDto);
         Task<List<BidDto>> GetAllAsync();
         Task<BidDto?> GetByIdAsync(int id);
+        Task<BidDto> UpdateAsync(BidUpdateDto updatedBidDto);
+        Task<bool> DeleteAsync(int id);
     }
 }

@@ -12,5 +12,6 @@ namespace DataAccessLayer.Repositories
         Task<Bid> CreateAsync(Bid bid);
         Task<List<Bid>> GetAllAsync();
         Task<Bid> GetByIdAsync(int id);
+        Task UpdateAsync(Bid bid);
     }
 }

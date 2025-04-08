@@ -43,7 +43,7 @@ namespace Services
             return _mapper.Map<UserDto>(createdUser);
         }
 
-        public async Task<UserDto> UpdateAsync(UserUpdateDto updatedUserDto)
+        public async Task<UserDto> UpdateAsync(BidUpdateDto updatedUserDto)
         {
             var existingUser = await _repo.GetByIdAsync(updatedUserDto.Id);
             if (existingUser == null)

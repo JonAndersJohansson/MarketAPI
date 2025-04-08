@@ -61,34 +61,34 @@ namespace MarketAPI.Controllers
             return CreatedAtRoute("GetBidById", new { id = createdBid.Id }, createdBid);
         }
 
-        //[HttpPut("{id}")] //Put
-        //public async Task<ActionResult<UserUpdateDto>> PutAsync(int id, UserUpdateDto updatedUserDto)
-        //{
-        //    if (id != updatedUserDto.Id)
-        //        return BadRequest("Id mismatch.");
+        [HttpPut("{id}")] //Put
+        public async Task<ActionResult<BidUpdateDto>> PutAsync(int id, BidUpdateDto updatedBidDto)
+        {
+            if (id != updatedBidDto.Id)
+                return BadRequest("Id mismatch.");
 
-        //    if (!ModelState.IsValid)
-        //        return BadRequest(ModelState);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-        //    var userDto = await _userService.UpdateAsync(updatedUserDto);
+            var bidDto = await _bidService.UpdateAsync(updatedBidDto);
 
-        //    if (userDto == null)
-        //        return NotFound("User not found.");
+            if (bidDto == null)
+                return NotFound("Bid not found.");
 
-        //    return Ok(userDto);
-        //}
+            return Ok(bidDto);
+        }
 
-        //[HttpDelete]
-        //[Route("{id}")]
-        //public async Task<ActionResult<UserDto>> Delete(int id)
-        //{
-        //    var success = await _userService.DeleteAsync(id);
-        //    if (!success)
-        //    {
-        //        return NotFound("User not found.");
-        //    }
+        [HttpDelete]
+        [Route("{id}")]
+        public async Task<ActionResult<BidDto>> Delete(int id)
+        {
+            var success = await _bidService.DeleteAsync(id);
+            if (!success)
+            {
+                return NotFound("Bid not found.");
+            }
 
-        //    return Ok("User deleted successfully.");
-        //}
+            return Ok("Bid deleted successfully.");
+        }
     }
 }

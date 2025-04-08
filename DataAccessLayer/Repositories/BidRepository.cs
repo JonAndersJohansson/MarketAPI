@@ -51,5 +51,10 @@ namespace DataAccessLayer.Repositories
 
             return createdBid;
         }
+
+        public async Task UpdateAsync(Bid bid)
+        {
+            await _dbContext.SaveChangesAsync();
+        }
     }
 }
