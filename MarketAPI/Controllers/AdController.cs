@@ -62,7 +62,7 @@ namespace MarketAPI.Controllers
         }
 
         [HttpPut("{id}")] //Put
-        public async Task<ActionResult<AdUpdateDto>> UpdateAsync(int id, AdUpdateDto updatedAdDto)
+        public async Task<ActionResult<AdUpdateDto>> PutAsync(int id, AdUpdateDto updatedAdDto)
         {
             if (id != updatedAdDto.Id)
                 return BadRequest("Id mismatch.");

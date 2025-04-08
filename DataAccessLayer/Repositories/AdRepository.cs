@@ -46,6 +46,10 @@ namespace DataAccessLayer.Repositories
 
             return createdAd;
         }
-    }
 
+        public async Task UpdateAsync(Ad ad)
+        {
+            await _dbContext.SaveChangesAsync();
+        }
+    }
 }

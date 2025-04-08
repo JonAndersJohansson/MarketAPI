@@ -13,6 +13,9 @@ namespace Services.Profiles
 
             CreateMap<AdCreateDto, Ad>()
             .ReverseMap();
+
+            CreateMap<AdUpdateDto, Ad>()
+                .ReverseMap();
         }
     }
 }

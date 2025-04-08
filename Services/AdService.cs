@@ -33,6 +33,21 @@ namespace Services
             var createdAd = await _repo.CreateAsync(ad);
             return _mapper.Map<AdDto>(createdAd);
         }
+
+        public async Task<AdDto?> UpdateAsync(AdUpdateDto updatedAdDto)
+        {
+            var existingAd = await _repo.GetByIdAsync(updatedAdDto.Id);
+
+            if (existingAd == null)
+                return null;
+
+            _mapper.Map(updatedAdDto, existingAd);
+
+            await _repo.UpdateAsync(existingAd);
+
+            return _mapper.Map<AdDto>(existingAd);
+        }
+
     }
 
 }
