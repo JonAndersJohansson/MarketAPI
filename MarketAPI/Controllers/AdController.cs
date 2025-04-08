@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using Services;
 using Services.DTO;
 
@@ -58,35 +59,24 @@ namespace MarketAPI.Controllers
             }
 
             return CreatedAtRoute("GetAdById", new { id = createdAd.Id }, createdAd);
-
-
-            //return Ok(createdAd); // bara för test
-
-            //Console.WriteLine($"CREATED ID: {createdAd.Id}");
-            //return CreatedAtAction(nameof(GetOneAsync), new { id = createdAd.Id }, createdAd);
-
         }
 
-        //[HttpPut("{id}")] //Update
-        //public async Task<ActionResult<AdUpdateDto>> UpdateAsync(AdUpdateDto newAdDto)
-        //{
-        //    // OBS: PUT Uppdaterar HELA SuperHero (ALLA properties)
-        //    var adToUpdate = await _dbContext.SuperHeroes.FindAsync(hero.Id);
+        [HttpPut("{id}")] //Put
+        public async Task<ActionResult<AdUpdateDto>> UpdateAsync(int id, AdUpdateDto updatedAdDto)
+        {
+            if (id != updatedAdDto.Id)
+                return BadRequest("Id mismatch.");
 
-        //    if (heroToUpdate == null)
-        //    {
-        //        return BadRequest("Superhero not found");
-        //    }
-        //    heroToUpdate.Name = hero.Name;
-        //    heroToUpdate.FirstName = hero.FirstName;
-        //    heroToUpdate.SurName = hero.SurName;
-        //    heroToUpdate.City = hero.City;
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-        //    await _dbContext.SaveChangesAsync();
+            var adDto = await _adService.UpdateAsync(updatedAdDto);
 
-        //    return Ok(await _dbContext.SuperHeroes.ToListAsync());
+            if (adDto == null)
+                return NotFound("Ad not found.");
 
-        //    return Ok(heroes);
-        //}
+            return Ok(adDto);
+        }
+
     }
 }
