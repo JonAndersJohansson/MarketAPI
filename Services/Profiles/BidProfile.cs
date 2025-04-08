@@ -12,7 +12,7 @@ namespace Services.Profiles
                 .ReverseMap();
 
             CreateMap<BidCreateDto, Bid>()
-            .ReverseMap();
+                .ReverseMap();
 
             CreateMap<BidUpdateDto, Bid>()
                 .ReverseMap();
