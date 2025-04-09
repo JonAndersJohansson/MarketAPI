@@ -24,7 +24,7 @@ namespace MarketAPI.Controllers
 
             if (bidsDto == null || bidsDto.Count == 0)
             {
-                return NotFound("No users found.");
+                return NotFound("No bids found.");
             }
 
             return Ok(bidsDto);

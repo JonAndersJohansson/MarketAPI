@@ -27,7 +27,8 @@ namespace DataAccessLayer.Data
                 _dbContext.Users.Add(new User
                 {
                     Name = "Pelle Jönsson",
-                    Email = "volvo@ads.se"
+                    Email = "volvo@ads.se",
+                    IsActive = true
                 });
             }
 
@@ -36,7 +37,8 @@ namespace DataAccessLayer.Data
                 _dbContext.Users.Add(new User
                 {
                     Name = "Karin Andersson",
-                    Email = "soffa@ads.se"
+                    Email = "soffa@ads.se",
+                    IsActive = true
                 });
             }
 
@@ -65,7 +67,8 @@ namespace DataAccessLayer.Data
                     Amount = 5200,
                     BidTime = DateTime.UtcNow,
                     AdId = ad.Id,
-                    UserId = karin.Id
+                    UserId = karin.Id,
+                    IsActive = true
                 });
             }
 
@@ -88,7 +91,8 @@ namespace DataAccessLayer.Data
                     Amount = 850,
                     BidTime = DateTime.UtcNow,
                     AdId = ad.Id,
-                    UserId = pelle.Id
+                    UserId = pelle.Id,
+                    IsActive = true
                 });
             }
 

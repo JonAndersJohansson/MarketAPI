@@ -11,8 +11,8 @@ namespace Services
     {
         Task<List<UserDto>> GetAllAsync();
         Task<UserDto> GetByIdAsync(int id);
-        Task<UserDto> CreateAsync(BidCreateDto userCreateDto);
-        Task<UserDto> UpdateAsync(BidUpdateDto updatedUserDto);
+        Task<UserDto> CreateAsync(UserCreateDto userCreateDto);
+        Task<UserDto> UpdateAsync(UserUpdateDto updatedUserDto);
         Task<bool> DeleteAsync(int id);
     }
 }
