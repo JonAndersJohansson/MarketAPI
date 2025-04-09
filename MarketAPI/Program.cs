@@ -3,6 +3,7 @@ using DataAccessLayer.Repositories;
 using Services.Profiles;
 using Microsoft.EntityFrameworkCore;
 using Services;
+using Microsoft.OpenApi.Models;
 
 namespace MarketAPI
 {
@@ -13,16 +14,24 @@ namespace MarketAPI
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-
             builder.Services.AddControllers().AddNewtonsoftJson();
-            // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-            builder.Services.AddOpenApi();
+
+            // Swagger (Swashbuckle)
+            builder.Services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "MarketAPI",
+                    Version = "v1",
+                    Description = "Ett litet REST API för annonser, bud och användare. Av Jon Johansson 2025."
+                });
+            });
 
             // DbContext
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-            // DataInitializer, Dependency Injection
+            // DataInitializer
             builder.Services.AddTransient<DataInitializer>();
 
             // Services
@@ -40,29 +49,28 @@ namespace MarketAPI
 
             var app = builder.Build();
 
-            // MigrateData()
+            // Migrate database and seed data
             using (var scope = app.Services.CreateScope())
             {
-                scope.ServiceProvider.GetService<DataInitializer>().MigrateData();
+                scope.ServiceProvider.GetRequiredService<DataInitializer>().MigrateData();
             }
 
-            // Configure the HTTP request pipeline.
+            // Swagger UI
             if (app.Environment.IsDevelopment())
             {
-                app.MapOpenApi();
-                app.UseSwaggerUI(options =>
-                    options.SwaggerEndpoint("/openapi/v1.json", "MarketAPI")); // Swagger
+                app.UseSwagger();
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "MarketAPI");
+                });
             }
 
             app.UseHttpsRedirection();
-
             app.UseAuthorization();
-
             app.MapControllers();
 
-            // Swagger
-            app.MapGet("/", () => Results.Redirect("/swagger"))
-                .ExcludeFromDescription();
+            // Redirect root to Swagger UI
+            app.MapGet("/", () => Results.Redirect("/swagger")).ExcludeFromDescription();
 
             app.Run();
         }
