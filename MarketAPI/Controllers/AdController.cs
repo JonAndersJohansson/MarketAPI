@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Newtonsoft.Json;
 using Services;
 using Services.DTO;
+using System.ComponentModel.DataAnnotations;
 
 namespace MarketAPI.Controllers
 {
@@ -72,17 +75,26 @@ namespace MarketAPI.Controllers
             return Ok(adDto);
         }
 
-        [HttpPatch("{id}")] //Patch/UpdatePart
+        [HttpPatch("{id}")] // PATCH/UpdatePart
         public async Task<IActionResult> PatchAd(int id, JsonPatchDocument<AdUpdateDto> patchDoc)
         {
-            var adDto = await _adService.PatchAsync(id, patchDoc);
+            if (patchDoc == null || patchDoc.Operations.Count == 0)
+                return BadRequest("Patch document is missing or empty.");
 
-            if (adDto == null)
-                return NotFound();
+            try
+            {
+                var adDto = await _adService.PatchAsync(id, patchDoc);
 
-            return Ok(adDto);
+                if (adDto == null)
+                    return NotFound();
+
+                return Ok(adDto);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
-
 
         [HttpDelete] //Delete (Soft)
         [Route("{id}")]

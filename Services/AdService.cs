@@ -3,6 +3,8 @@ using DataAccessLayer.Models;
 using DataAccessLayer.Repositories;
 using Microsoft.AspNetCore.JsonPatch;
 using Services.DTO;
+using Services.Helpers;
+using System.ComponentModel.DataAnnotations;
 
 namespace Services
 {
@@ -65,11 +67,11 @@ namespace Services
             if (ad == null || !ad.IsActive)
                 return null;
 
-            var adToPatch = _mapper.Map<AdUpdateDto>(ad);
+            var dto = _mapper.Map<AdUpdateDto>(ad);
 
-            patchDoc.ApplyTo(adToPatch);
+            PatchHelper.ApplyPatch(patchDoc, dto, "/id");
 
-            _mapper.Map(adToPatch, ad);
+            _mapper.Map(dto, ad);
             await _adRepo.UpdateAsync(ad);
 
             return _mapper.Map<AdDto>(ad);

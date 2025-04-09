@@ -3,29 +3,30 @@ using DataAccessLayer.Models;
 using DataAccessLayer.Repositories;
 using Microsoft.AspNetCore.JsonPatch;
 using Services.DTO;
+using Services.Helpers;
 
 namespace Services
 {
     public class UserService : IUserService
     {
-        private readonly IUserRepository _repo;
+        private readonly IUserRepository _userRepo;
         private readonly IMapper _mapper;
 
-        public UserService(IUserRepository repo, IMapper mapper)
+        public UserService(IUserRepository userRepo, IMapper mapper)
         {
-            _repo = repo;
+            _userRepo = userRepo;
             _mapper = mapper;
         }
         public async Task<List<UserDto>> GetAllAsync()
         {
-            var users = await _repo.GetAllAsync();
+            var users = await _userRepo.GetAllAsync();
             return _mapper.Map<List<UserDto>>(users);
         }
 
         public async Task<UserDto> GetByIdAsync(int id)
         {
 
-            var user = await _repo.GetByIdAsync(id);
+            var user = await _userRepo.GetByIdAsync(id);
             if (user == null)
             {
                 return null;
@@ -36,47 +37,47 @@ namespace Services
         public async Task<UserDto> CreateAsync(UserCreateDto userCreateDto)
         {
             var user = _mapper.Map<User>(userCreateDto);
-            var createdUser = await _repo.CreateAsync(user);
+            var createdUser = await _userRepo.CreateAsync(user);
             return _mapper.Map<UserDto>(createdUser);
         }
 
         public async Task<UserDto> UpdateAsync(UserUpdateDto updatedUserDto)
         {
-            var existingUser = await _repo.GetByIdAsync(updatedUserDto.Id);
+            var existingUser = await _userRepo.GetByIdAsync(updatedUserDto.Id);
             if (existingUser == null)
             {
                 return null;
             }
             _mapper.Map(updatedUserDto, existingUser);
-            await _repo.UpdateAsync(existingUser);
+            await _userRepo.UpdateAsync(existingUser);
             return _mapper.Map<UserDto>(existingUser);
         }
 
         public async Task<UserDto?> PatchAsync(int id, JsonPatchDocument<UserUpdateDto> patchDoc)
         {
-            var user = await _repo.GetByIdAsync(id);
+            var user = await _userRepo.GetByIdAsync(id);
             if (user == null || !user.IsActive)
                 return null;
 
-            var userToPatch = _mapper.Map<UserUpdateDto>(user);
+            var userDto = _mapper.Map<UserUpdateDto>(user);
 
-            patchDoc.ApplyTo(userToPatch);
+            PatchHelper.ApplyPatch(patchDoc, userDto, "/id");
 
-            _mapper.Map(userToPatch, user);
-            await _repo.UpdateAsync(user);
+            _mapper.Map(userDto, user);
+            await _userRepo.UpdateAsync(user);
 
             return _mapper.Map<UserDto>(user);
         }
 
         public async Task<bool> DeleteAsync(int id)
         {
-            var user = await _repo.GetByIdAsync(id);
+            var user = await _userRepo.GetByIdAsync(id);
             if (user == null)
             {
                 return false;
             }
             user.IsActive = false;
-            await _repo.UpdateAsync(user);
+            await _userRepo.UpdateAsync(user);
             return true;
         }
     }

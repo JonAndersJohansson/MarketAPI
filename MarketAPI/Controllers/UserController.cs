@@ -76,12 +76,22 @@ namespace MarketAPI.Controllers
         [HttpPatch("{id}")] //Patch/UpdatePart
         public async Task<IActionResult> PatchUser(int id, JsonPatchDocument<UserUpdateDto> patchDoc)
         {
-            var userDto = await _userService.PatchAsync(id, patchDoc);
+            if (patchDoc == null || patchDoc.Operations.Count == 0)
+                return BadRequest("Patch document is missing or empty.");
 
-            if (userDto == null)
-                return NotFound();
+            try
+            {
+                var userDto = await _userService.PatchAsync(id, patchDoc);
 
-            return Ok(userDto);
+                if (userDto == null)
+                    return NotFound();
+
+                return Ok(userDto);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpDelete] //Delete (Soft)

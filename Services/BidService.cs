@@ -3,6 +3,7 @@ using DataAccessLayer.Models;
 using DataAccessLayer.Repositories;
 using Microsoft.AspNetCore.JsonPatch;
 using Services.DTO;
+using Services.Helpers;
 
 namespace Services
 {
@@ -75,11 +76,11 @@ namespace Services
             if (bid == null || !bid.IsActive)
                 return null;
 
-            var bidToPatch = _mapper.Map<BidUpdateDto>(bid);
+            var bidDto = _mapper.Map<BidUpdateDto>(bid);
 
-            patchDoc.ApplyTo(bidToPatch);
+            PatchHelper.ApplyPatch(patchDoc, bidDto, "/id", "/adid", "/userid");
 
-            _mapper.Map(bidToPatch, bid);
+            _mapper.Map(bidDto, bid);
             await _bidRepo.UpdateAsync(bid);
 
             return _mapper.Map<BidDto>(bid);
