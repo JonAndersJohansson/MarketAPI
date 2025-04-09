@@ -14,7 +14,7 @@ namespace MarketAPI
 
             // Add services to the container.
 
-            builder.Services.AddControllers();
+            builder.Services.AddControllers().AddNewtonsoftJson();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
 
@@ -40,7 +40,6 @@ namespace MarketAPI
 
             var app = builder.Build();
 
-
             // MigrateData()
             using (var scope = app.Services.CreateScope())
             {
@@ -52,7 +51,7 @@ namespace MarketAPI
             {
                 app.MapOpenApi();
                 app.UseSwaggerUI(options =>
-                    options.SwaggerEndpoint("/openapi/v1.json", "superHero api"));
+                    options.SwaggerEndpoint("/openapi/v1.json", "MarketAPI")); // Swagger
             }
 
             app.UseHttpsRedirection();
@@ -61,6 +60,7 @@ namespace MarketAPI
 
             app.MapControllers();
 
+            // Swagger
             app.MapGet("/", () => Results.Redirect("/swagger"))
                 .ExcludeFromDescription();
 

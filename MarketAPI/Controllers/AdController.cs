@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Mvc;
 using Services;
 using Services.DTO;
 
@@ -45,11 +46,6 @@ namespace MarketAPI.Controllers
         [HttpPost] //Create
         public async Task<ActionResult<AdDto>> PostAsync(AdCreateDto newAdDto)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
             var createdAd = await _adService.CreateAsync(newAdDto);
 
             if (createdAd == null)
@@ -60,14 +56,11 @@ namespace MarketAPI.Controllers
             return CreatedAtRoute("GetAdById", new { id = createdAd.Id }, createdAd);
         }
 
-        [HttpPut("{id}")] //Put
+        [HttpPut("{id}")] //Put/UpdateAll
         public async Task<ActionResult<AdUpdateDto>> PutAsync(int id, AdUpdateDto updatedAdDto)
         {
             if (id != updatedAdDto.Id)
                 return BadRequest("Id mismatch.");
-
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
 
             var adDto = await _adService.UpdateAsync(updatedAdDto);
 
@@ -77,8 +70,20 @@ namespace MarketAPI.Controllers
             return Ok(adDto);
         }
 
-        [HttpDelete]
-        [Route("{id}")] //Delete
+        [HttpPatch("{id}")] //Patch/UpdatePart
+        public async Task<IActionResult> PatchAd(int id, JsonPatchDocument<AdUpdateDto> patchDoc)
+        {
+            var adDto = await _adService.PatchAsync(id, patchDoc);
+
+            if (adDto == null)
+                return NotFound();
+
+            return Ok(adDto);
+        }
+
+
+        [HttpDelete] //Delete (Soft)
+        [Route("{id}")]
         public async Task<ActionResult<AdDto>> Delete(int id)
         {
             var success = await _adService.DeleteAsync(id);

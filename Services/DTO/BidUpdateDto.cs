@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Services.DTO
 {
@@ -16,5 +11,4 @@ namespace Services.DTO
         [Range(1, 1_000_000, ErrorMessage = "Amount must be between 1 - 1000000.")]
         public decimal Amount { get; set; }
     }
-
 }

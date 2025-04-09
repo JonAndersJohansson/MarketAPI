@@ -62,6 +62,7 @@ namespace DataAccessLayer.Data
                 _dbContext.Ads.Add(ad);
                 _dbContext.SaveChanges();
 
+                //Bid
                 _dbContext.Bids.Add(new Bid
                 {
                     Amount = 5200,
@@ -86,6 +87,7 @@ namespace DataAccessLayer.Data
                 _dbContext.Ads.Add(ad);
                 _dbContext.SaveChanges();
 
+                //Bid
                 _dbContext.Bids.Add(new Bid
                 {
                     Amount = 850,

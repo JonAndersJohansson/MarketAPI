@@ -1,12 +1,8 @@
 ﻿using AutoMapper;
 using DataAccessLayer.Models;
 using DataAccessLayer.Repositories;
+using Microsoft.AspNetCore.JsonPatch;
 using Services.DTO;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Services
 {
@@ -53,6 +49,22 @@ namespace Services
             _mapper.Map(updatedUserDto, existingUser);
             await _repo.UpdateAsync(existingUser);
             return _mapper.Map<UserDto>(existingUser);
+        }
+
+        public async Task<UserDto?> PatchAsync(int id, JsonPatchDocument<UserUpdateDto> patchDoc)
+        {
+            var user = await _repo.GetByIdAsync(id);
+            if (user == null || !user.IsActive)
+                return null;
+
+            var userToPatch = _mapper.Map<UserUpdateDto>(user);
+
+            patchDoc.ApplyTo(userToPatch);
+
+            _mapper.Map(userToPatch, user);
+            await _repo.UpdateAsync(user);
+
+            return _mapper.Map<UserDto>(user);
         }
         public async Task<bool> DeleteAsync(int id)
         {

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Services.DTO;
 using Services;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace MarketAPI.Controllers
 {
@@ -42,7 +43,7 @@ namespace MarketAPI.Controllers
             return Ok(userDto);
         }
 
-        [HttpPost] //Create
+        [HttpPost] //Post/Create
         public async Task<ActionResult<UserDto>> PostAsync(UserCreateDto newUserDto)
         {
             if (!ModelState.IsValid)
@@ -60,7 +61,7 @@ namespace MarketAPI.Controllers
             return CreatedAtRoute("GetUserById", new { id = createdUser.Id }, createdUser);
         }
 
-        [HttpPut("{id}")] //Put
+        [HttpPut("{id}")] //Put/UpdateAll
         public async Task<ActionResult<UserUpdateDto>> PutAsync(int id, UserUpdateDto updatedUserDto)
         {
             if (id != updatedUserDto.Id)
@@ -77,8 +78,19 @@ namespace MarketAPI.Controllers
             return Ok(userDto);
         }
 
-        [HttpDelete]
-        [Route("{id}")] //Delete
+        [HttpPatch("{id}")] //Patch/UpdatePart
+        public async Task<IActionResult> PatchUser(int id, JsonPatchDocument<UserUpdateDto> patchDoc)
+        {
+            var userDto = await _userService.PatchAsync(id, patchDoc);
+
+            if (userDto == null)
+                return NotFound();
+
+            return Ok(userDto);
+        }
+
+        [HttpDelete] //Delete (Soft)
+        [Route("{id}")]
         public async Task<ActionResult<UserDto>> Delete(int id)
         {
             var success = await _userService.DeleteAsync(id);

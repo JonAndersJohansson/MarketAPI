@@ -1,9 +1,5 @@
-﻿using Services.DTO;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.JsonPatch;
+using Services.DTO;
 
 namespace Services
 {
@@ -13,6 +9,7 @@ namespace Services
         Task<List<BidDto>> GetAllAsync();
         Task<BidDto?> GetByIdAsync(int id);
         Task<BidDto> UpdateAsync(BidUpdateDto updatedBidDto);
+        Task<BidDto?> PatchAsync(int id, JsonPatchDocument<BidUpdateDto> patchDoc);
         Task<bool> DeleteAsync(int id);
     }
 }

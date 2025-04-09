@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
-using Services.DTO;
 using Services;
+using Services.DTO;
 
 namespace MarketAPI.Controllers
 {
@@ -61,7 +61,7 @@ namespace MarketAPI.Controllers
             return CreatedAtRoute("GetBidById", new { id = createdBid.Id }, createdBid);
         }
 
-        [HttpPut("{id}")] //Put
+        [HttpPut("{id}")] //Put/UpdateAll
         public async Task<ActionResult<BidUpdateDto>> PutAsync(int id, BidUpdateDto updatedBidDto)
         {
             if (id != updatedBidDto.Id)
@@ -78,8 +78,19 @@ namespace MarketAPI.Controllers
             return Ok(bidDto);
         }
 
-        [HttpDelete]
-        [Route("{id}")] //Delete
+        [HttpPatch("{id}")] //Patch/UpdatePart
+        public async Task<IActionResult> PatchBid(int id, JsonPatchDocument<BidUpdateDto> patchDoc)
+        {
+            var bidDto = await _bidService.PatchAsync(id, patchDoc);
+
+            if (bidDto == null)
+                return NotFound();
+
+            return Ok(bidDto);
+        }
+
+        [HttpDelete] //Delete (Soft)
+        [Route("{id}")]
         public async Task<ActionResult<BidDto>> Delete(int id)
         {
             var success = await _bidService.DeleteAsync(id);

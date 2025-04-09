@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Services.DTO
 {
@@ -19,5 +14,4 @@ namespace Services.DTO
         [Required(ErrorMessage = "UserId required.")]
         public int UserId { get; set; }
     }
-
 }

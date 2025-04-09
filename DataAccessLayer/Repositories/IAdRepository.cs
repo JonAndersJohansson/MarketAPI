@@ -9,5 +9,4 @@ namespace DataAccessLayer.Repositories
         Task<Ad> GetByIdAsync(int id);
         Task UpdateAsync(Ad ad);
     }
-
 }

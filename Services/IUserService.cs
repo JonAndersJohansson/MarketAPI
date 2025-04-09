@@ -1,9 +1,5 @@
-﻿using Services.DTO;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.JsonPatch;
+using Services.DTO;
 
 namespace Services
 {
@@ -13,6 +9,7 @@ namespace Services
         Task<UserDto> GetByIdAsync(int id);
         Task<UserDto> CreateAsync(UserCreateDto userCreateDto);
         Task<UserDto> UpdateAsync(UserUpdateDto updatedUserDto);
+        Task<UserDto?> PatchAsync(int id, JsonPatchDocument<UserUpdateDto> patchDoc);
         Task<bool> DeleteAsync(int id);
     }
 }

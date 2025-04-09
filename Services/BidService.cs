@@ -1,12 +1,8 @@
 ﻿using AutoMapper;
 using DataAccessLayer.Models;
 using DataAccessLayer.Repositories;
+using Microsoft.AspNetCore.JsonPatch;
 using Services.DTO;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Services
 {
@@ -51,6 +47,22 @@ namespace Services
             await _repo.UpdateAsync(existingBid);
 
             return _mapper.Map<BidDto>(existingBid);
+        }
+
+        public async Task<BidDto?> PatchAsync(int id, JsonPatchDocument<BidUpdateDto> patchDoc)
+        {
+            var bid = await _repo.GetByIdAsync(id);
+            if (bid == null || !bid.IsActive)
+                return null;
+
+            var bidToPatch = _mapper.Map<BidUpdateDto>(bid);
+
+            patchDoc.ApplyTo(bidToPatch);
+
+            _mapper.Map(bidToPatch, bid);
+            await _repo.UpdateAsync(bid);
+
+            return _mapper.Map<BidDto>(bid);
         }
         public async Task<bool> DeleteAsync(int id)
         {
