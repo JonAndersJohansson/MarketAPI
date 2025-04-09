@@ -46,11 +46,6 @@ namespace MarketAPI.Controllers
         [HttpPost] //Post/Create
         public async Task<ActionResult<UserDto>> PostAsync(UserCreateDto newUserDto)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
             var createdUser = await _userService.CreateAsync(newUserDto);
 
             if (createdUser == null)

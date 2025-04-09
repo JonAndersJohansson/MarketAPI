@@ -8,48 +8,60 @@ namespace Services
 {
     public class AdService : IAdService
     {
-        private readonly IAdRepository _repo;
+        private readonly IAdRepository _adRepo;
+        private readonly IUserRepository _userRepo;
         private readonly IMapper _mapper;
 
-        public AdService(IAdRepository repo, IMapper mapper)
+        public AdService(IAdRepository adRepo, IUserRepository userRepo, IMapper mapper)
         {
-            _repo = repo;
+            _adRepo = adRepo;
+            _userRepo = userRepo;
             _mapper = mapper;
         }
 
         public async Task<List<AdDto>> GetAllAsync()
         {
-            var ads = await _repo.GetAllAsync();
+            var ads = await _adRepo.GetAllAsync();
             return _mapper.Map<List<AdDto>>(ads);
         }
 
         public async Task<AdDto?> GetByIdAsync(int id)
         {
-            var ad = await _repo.GetByIdAsync(id);
+            var ad = await _adRepo.GetByIdAsync(id);
             return _mapper.Map<AdDto>(ad);
         }
-        public async Task<AdDto> CreateAsync(AdCreateDto createdDto)
+
+        public async Task<AdDto?> CreateAsync(AdCreateDto createdDto)
         {
+            if (createdDto.CreatorId <= 0)
+                throw new ArgumentException("CreatorId must be greater than 0");
+
+            var user = await _userRepo.GetByIdAsync(createdDto.CreatorId);
+            if (user == null || !user.IsActive)
+                throw new ArgumentException("CreatorId not found or invalid");
+
             var ad = _mapper.Map<Ad>(createdDto);
-            var createdAd = await _repo.CreateAsync(ad);
+            ad.CreatorId = user.Id;
+
+            var createdAd = await _adRepo.CreateAsync(ad);
             return _mapper.Map<AdDto>(createdAd);
         }
 
         public async Task<AdDto?> UpdateAsync(AdUpdateDto updatedAdDto)
         {
-            var existingAd = await _repo.GetByIdAsync(updatedAdDto.Id);
+            var existingAd = await _adRepo.GetByIdAsync(updatedAdDto.Id);
             if (existingAd == null || !existingAd.IsActive)
                 return null;
 
             _mapper.Map(updatedAdDto, existingAd);
-            await _repo.UpdateAsync(existingAd);
+            await _adRepo.UpdateAsync(existingAd);
 
             return _mapper.Map<AdDto>(existingAd);
         }
 
         public async Task<AdDto?> PatchAsync(int id, JsonPatchDocument<AdUpdateDto> patchDoc)
         {
-            var ad = await _repo.GetByIdAsync(id);
+            var ad = await _adRepo.GetByIdAsync(id);
             if (ad == null || !ad.IsActive)
                 return null;
 
@@ -58,19 +70,18 @@ namespace Services
             patchDoc.ApplyTo(adToPatch);
 
             _mapper.Map(adToPatch, ad);
-            await _repo.UpdateAsync(ad);
+            await _adRepo.UpdateAsync(ad);
 
             return _mapper.Map<AdDto>(ad);
         }
 
-
         public async Task<bool> DeleteAsync(int id)
         {
-            var ad = await _repo.GetByIdAsync(id);
+            var ad = await _adRepo.GetByIdAsync(id);
             if (ad == null)
                 return false;
             ad.IsActive = false;
-            await _repo.UpdateAsync(ad);
+            await _adRepo.UpdateAsync(ad);
             return true;
         }
     }

@@ -43,22 +43,18 @@ namespace MarketAPI.Controllers
             return Ok(bidDto);
         }
 
-        [HttpPost] //Create
+        [HttpPost] //Post/Create
         public async Task<ActionResult<BidDto>> PostAsync(BidCreateDto newBidDto)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(ModelState);
+                var createdBid = await _bidService.CreateAsync(newBidDto);
+                return CreatedAtRoute("GetBidById", new { id = createdBid.Id }, createdBid);
             }
-
-            var createdBid = await _bidService.CreateAsync(newBidDto);
-
-            if (createdBid == null)
+            catch (ArgumentException ex)
             {
-                return BadRequest("Could not create bid.");
+                return BadRequest(ex.Message);
             }
-
-            return CreatedAtRoute("GetBidById", new { id = createdBid.Id }, createdBid);
         }
 
         [HttpPut("{id}")] //Put/UpdateAll

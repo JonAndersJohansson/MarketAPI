@@ -32,6 +32,7 @@ namespace Services
             }
             return _mapper.Map<UserDto>(user);
         }
+
         public async Task<UserDto> CreateAsync(UserCreateDto userCreateDto)
         {
             var user = _mapper.Map<User>(userCreateDto);
@@ -66,6 +67,7 @@ namespace Services
 
             return _mapper.Map<UserDto>(user);
         }
+
         public async Task<bool> DeleteAsync(int id)
         {
             var user = await _repo.GetByIdAsync(id);

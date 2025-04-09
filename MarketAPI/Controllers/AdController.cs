@@ -43,18 +43,20 @@ namespace MarketAPI.Controllers
             return Ok(adDto);
         }
 
-        [HttpPost] //Create
+        [HttpPost] //Post/Create
         public async Task<ActionResult<AdDto>> PostAsync(AdCreateDto newAdDto)
         {
-            var createdAd = await _adService.CreateAsync(newAdDto);
-
-            if (createdAd == null)
+            try
             {
-                return BadRequest("Could not create ad.");
+                var createdAd = await _adService.CreateAsync(newAdDto);
+                return CreatedAtRoute("GetAdById", new { id = createdAd.Id }, createdAd);
             }
-
-            return CreatedAtRoute("GetAdById", new { id = createdAd.Id }, createdAd);
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
+
 
         [HttpPut("{id}")] //Put/UpdateAll
         public async Task<ActionResult<AdUpdateDto>> PutAsync(int id, AdUpdateDto updatedAdDto)
