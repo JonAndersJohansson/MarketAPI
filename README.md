@@ -15,7 +15,7 @@ Ett enkelt RESTful .NET Web API för att hantera annonser, bud och användare.
 ## Projektstruktur
 
 - `MarketAPI` – API-projekt med controllers och Swagger
-- `Services` – Service-lager med affärslogik och DTO-hantering
+- `Services` – Service-lager med affärslogik och DTO-hantering, Profiles och PatchHelper
 - `DataAccessLayer` – Data-lager med modeller, DbContext, seeding och repository
 
 ## Funktionalitet
@@ -33,7 +33,7 @@ API:et stödjer följande endpoints för varje entitet: `Ad`, `Bid` och `User`.
 – Uppdatera annons (fullständig uppdatering)
 
 ### PATCH
-– Delvis uppdatering av annons med JSON Patch
+– Delvis uppdatering av annons med JSON Patch inkl validering och felhantering
 
 ### DELETE
 – Soft delete (IsActive sätts till false)
